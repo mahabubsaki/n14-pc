@@ -11,7 +11,7 @@ import Profile from './Profile';
 const Navbar = () => {
 
     return (
-        <nav className='bg-backgrounds-300 text-foreground-300 py-2 px-2'>
+        <nav className='bg-backgrounds-300 text-foreground-300 py-2 px-2 mb-8'>
             <section className='max-w-7xl mx-auto'>
 
                 <div className='flex justify-between items-center '>

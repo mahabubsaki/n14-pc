@@ -22,6 +22,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+
         <AuthProviders session={session}>
           <ThemeProviders
             attribute="class"
@@ -31,10 +32,15 @@ export default async function RootLayout({ children }) {
           >
 
             <Navbar />
-            {children}
+            <section className='max-w-7xl mx-auto'>
+
+
+              {children}
+            </section>
 
           </ThemeProviders>
         </AuthProviders>
+
       </body>
     </html>
   );

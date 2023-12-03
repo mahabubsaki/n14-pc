@@ -23,15 +23,15 @@ const NavItems = () => {
         <div className='flex justify-center items-center gap-4 '>
             {ROUTES.map(i => {
                 if (i.common) {
-                    return <Link className='hover:text-secondary-500' href={i.href} key={i.label}>
+                    return <Link className='text-foreground hover:text-primarys-100' href={i.href} key={i.label}>
                         {i.label}
                     </Link>;
                 } else if (i.private && data) {
-                    return <Link className='hover:text-secondary-500' href={i.href} key={i.label}>
+                    return <Link className='text-foreground hover:text-primarys-100' href={i.href} key={i.label}>
                         {i.label}
                     </Link>;
                 } else if (i.unathenticated && !data) {
-                    return <Link className='hover:text-secondary-500' href={i.href} key={i.label}>
+                    return <Link className='text-foreground hover:text-primarys-100' href={i.href} key={i.label}>
                         {i.label}
                     </Link>;
                 } else {
