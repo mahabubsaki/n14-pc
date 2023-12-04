@@ -1,16 +1,18 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import ActionInput from '@/shared/ActionInput';
 import ActionMultiSelect from '@/shared/ActionMultiSelect';
 import ActionSelect from '@/shared/ActionSelect';
-import React from 'react';
-import ActionTextArea from '@/shared/ActionTextArea';
+import React, { useTransition } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
+import { uploadImage } from '@/utils/uploadImage';
+import { useRouter } from 'next/navigation';
+
 
 
 const articleSchema = z.object({
@@ -39,21 +41,39 @@ const DEFAULT_VALUES = {
     description: ""
 };
 
-const INPUTS = [{ name: "articleTitle", label: "Article Title", type: "text", placeholder: "Enter Article Title" }, { name: "articleImage", label: "Article Image", type: "file", placeholder: "" }];
 const MULTI_SELECT_OPTIONS = ['Sports', 'International', 'Space', 'Hollywood', 'Trending'];
 
 
 
-const ArticleForm = () => {
+const ArticleForm = ({ callback, publishers }) => {
+
     const form = useForm({
         resolver: zodResolver(articleSchema),
         defaultValues: DEFAULT_VALUES,
 
     });
+    const router = useRouter();
+
+    let [isPending, startTransition] = useTransition();
 
 
-    const onSubmit = (values) => {
-        console.log(values);
+    const onSubmit = async (values) => {
+        values.image = await uploadImage(values.image);
+        startTransition(async () => {
+
+            toast.promise(callback(values), {
+                loading: "Publishing Aricle...",
+                success: async (data) => {
+                    form.reset();
+                    router.push('/');
+                    return data.message;
+                },
+                error: (err) => {
+                    return err.message;
+                }
+
+            });
+        });
     };
 
     return (
@@ -88,6 +108,7 @@ const ArticleForm = () => {
                                         {...field}
                                         value={value?.fileName}
                                         onChange={(event) => {
+
                                             onChange(event.target.files[0]);
                                         }}
                                         type="file"
@@ -110,7 +131,7 @@ const ArticleForm = () => {
                         <FormItem>
                             <FormLabel htmlFor="publisher">Article Publisher</FormLabel>
                             <FormControl>
-                                <ActionSelect name={"publisher"} field={field} placeholder={'Select Publisher'} fields={['Prothom Alo', 'Sunrise']} />
+                                <ActionSelect name={"publisher"} field={field} placeholder={'Select Publisher'} fields={publishers} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -156,7 +177,7 @@ const ArticleForm = () => {
                     )}
 
                 />
-                <Button type="submit">Submit</Button>
+                <Button disabled={isPending} type="submit">Submit</Button>
             </form>
 
         </Form>

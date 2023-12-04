@@ -7,12 +7,15 @@ const ActionSelect = ({ fields, placeholder, label, name, field }) => {
         <>
             {label ? <Label className="cursor-pointer" htmlFor={name}>{label}</Label> : null}
 
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={(e) => {
+                console.log(e);
+                field.onChange(e);
+            }} defaultValue={field.value}>
                 <SelectTrigger id={name} name={name} className="w-full">
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>
-                    {fields.map(i => <SelectItem className='capitalize cursor-pointer' key={i} value={i}>{i}</SelectItem>)}
+                    {fields.map(i => <SelectItem className='capitalize cursor-pointer' key={i._id} value={i._id}>{i.name}</SelectItem>)}
                 </SelectContent>
             </Select>
         </>

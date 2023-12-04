@@ -21,6 +21,8 @@ import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Github } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const loginSchema = z.object({
     username: z.string().min(1, { message: "Username is required" }),
@@ -63,7 +65,7 @@ const registerSchema = z.object({
     }, { message: "Please give valid file for your avatar" })
 });
 
-const PROVIDERS = ['github'];
+const PROVIDERS = [{ name: 'google', logo: <FaGoogle size={20} /> }, { name: 'github', logo: <Github size={20} /> }];
 
 export function LoginRegisterForm({ fields, callback, type }) {
     const session = useSession();
@@ -82,11 +84,7 @@ export function LoginRegisterForm({ fields, callback, type }) {
     });
     async function onSubmit(values) {
         if (type === 'register') {
-            const formData = new FormData();
 
-            formData.append("image", values.avatar);
-
-            const { data: { data: { url } } } = await axios.post(`https://api.imgbb.com/1/upload?key=${envConfig.imgbbApi}`, formData);
             values.avatar = url;
             startTransition(async () => {
 
@@ -128,8 +126,28 @@ export function LoginRegisterForm({ fields, callback, type }) {
             router.push("/");
         }
     }, [session]);
+    console.log(isPending);
     if (session.status === 'loading') {
-        return "Loading...";
+        return <>
+            <div className="w-4/5 md:w-[600px] ">
+
+                <Skeleton className={' mt-4 mb-3  w-[200px] h-7  mr-auto'} />
+
+                <Skeleton className={' h-12'} />
+                <Skeleton className={' mt-4 mb-3  w-[200px] h-7  mr-auto'} />
+
+                <Skeleton className={' h-12'} />
+                <Skeleton className={' mt-4 mb-3  w-[200px] h-7  mr-auto'} />
+
+                <Skeleton className={' h-12'} />
+                <Skeleton className={' mt-4 mb-3  w-[200px] h-7  mr-auto'} />
+
+                <Skeleton className={' h-12 mt-3'} />
+                <Skeleton className={' h-12 mt-3'} />
+                <Skeleton className={' h-12 mt-3'} />
+            </div>
+        </>
+            ;
     }
     return (
         <div className="w-full flex justify-center">
@@ -183,15 +201,15 @@ export function LoginRegisterForm({ fields, callback, type }) {
                         })}
 
 
-                        <Button className="w-full" variant="secondary" type="submit">Submit</Button>
+                        <Button disabled={isPending} className="w-full" variant="secondary" type="submit">Submit</Button>
                     </form>
                 </Form>
-                <div className="mt-4 flex gap-4">
+                <div className="mt-4 flex flex-col gap-4">
                     {
-                        PROVIDERS.map(i => <Button className="w-full flex gap-1 bg-black hover:bg-backgrounds-300 border border-backgrounds-500 hover:text-black text-white" key={i} onClick={async () => {
+                        PROVIDERS.map(i => <Button disabled={isPending} className="w-full flex gap-1 bg-black hover:bg-backgrounds-300 border border-backgrounds-500 hover:text-black text-white" key={i.name} onClick={async () => {
 
 
-                            toast.promise(signIn(i, {
+                            toast.promise(signIn(i.name, {
                                 redirect: false,
                                 callbackUrl: "/"
                             }), {
@@ -205,7 +223,8 @@ export function LoginRegisterForm({ fields, callback, type }) {
                             });
 
                         }}>
-                            <Github size={20} /> <span>Sign In with</span> <span className="capitalize">{i}</span>
+
+                            {i.logo} <span>Sign In with</span> <span className="capitalize">{i.name}</span>
                         </Button>)
                     }
                 </div>

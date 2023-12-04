@@ -5,6 +5,7 @@ import passwordMatcher from "@/utils/passwordMatcher";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
 
@@ -35,21 +36,27 @@ export const authOptions = {
             clientId: process.env.GITHUB_ID,
             clientSecret: process.env.GITHUB_SECRET,
         }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID,
+            clientSecret: process.env.GOOGLE_SECRET,
+        })
 
     ],
     callbacks: {
         async signIn({ user, account }) {
-            console.log(user, account);
+
             if (account.provider === 'credentials') {
                 return true;
             }
             else {
                 await dbConnect();
                 try {
-                    const existing = await User.find({ email: user?.email || "anonymous@gmail.com" });
+                    const existing = await User.findOne({ email: user?.email || "anonymous@gmail.com" });
+
                     if (existing) {
                         return true;
                     }
+
                     await ExternelUser.findOneAndUpdate({ email: user?.email || "anonymous@gmail.com" }, user, { upsert: true });
 
                     return true;
@@ -67,6 +74,7 @@ export const authOptions = {
         }
         ,
         async session({ session, token, user }) {
+
             session.user = token.user;
             return session;
         },

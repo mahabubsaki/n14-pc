@@ -9,7 +9,8 @@ import React from 'react';
 const ROUTES = [
     { label: 'Home', href: '/', common: true },
     { label: 'All Articles', href: '/all-articles', common: true },
-    { label: 'Add Articles', href: '/add-articles', common: true },
+    { label: 'Add Articles', href: '/add-articles', private: true },
+    { label: 'Add Publishers', href: '/add-publishers', private: true },
     { label: 'My Articles', href: '/my-articles', private: true },
     { label: 'Subscription', href: '/subscription', private: true },
     { label: 'Premium Articles', href: '/premium-articles', private: true },
