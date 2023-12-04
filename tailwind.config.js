@@ -22,6 +22,7 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -115,6 +116,19 @@ module.exports = {
           900: 'hsl(var(--accent-900))',
           950: 'hsl(var(--accent-950))',
         },
+        'base': {
+          50: 'hsl(var(--base-50))',
+          100: 'hsl(var(--base-100))',
+          200: 'hsl(var(--base-200))',
+          300: 'hsl(var(--base-300))',
+          400: 'hsl(var(--base-400))',
+          500: 'hsl(var(--base-500))',
+          600: 'hsl(var(--base-600))',
+          700: 'hsl(var(--base-700))',
+          800: 'hsl(var(--base-800))',
+          900: 'hsl(var(--base-900))',
+          950: 'hsl(var(--base-950))',
+        }
       },
       borderRadius: {
         lg: "var(--radius)",

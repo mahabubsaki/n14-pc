@@ -15,7 +15,7 @@ const Navbar = () => {
             <section className='max-w-7xl mx-auto'>
 
                 <div className='flex justify-between items-center '>
-                    <div className='w-[128px] h-[64px]  relative'>
+                    <div className='w-[128px] h-[75px]  relative'>
                         <Image className='w-full h-full' fill alt='Website-Logo' src={'/logo.png'} />
                     </div>
 

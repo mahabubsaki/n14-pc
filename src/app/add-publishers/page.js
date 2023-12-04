@@ -1,6 +1,7 @@
 import dbConnect from '@/db';
 import Publisher from '@/modules/publishers/publishers.model';
 import PublisherForm from '@/pages/AddPublisher/PublisherForm';
+import { revalidatePath } from 'next/cache';
 import React from 'react';
 
 const AddPublisher = () => {
@@ -9,6 +10,7 @@ const AddPublisher = () => {
         try {
             await dbConnect();
             await Publisher.create(values);
+            revalidatePath('/');
             return { message: "Successfully added the publisher" };
         } catch (err) {
 

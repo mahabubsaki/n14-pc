@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import makeAnimated from 'react-select/animated';
 import { Label } from '@/components/ui/label';
+import useDetectTheme from '@/hooks/useDetectTheme';
 
 
 
@@ -19,8 +20,8 @@ const animatedComponents = makeAnimated({ NoOptionsMessage, IndicatorSeparator }
 
 const ActionMultiSelect = ({ name, placeholder, label, selectOptions = [], onChange }) => {
     const modifiedOptions = selectOptions.map(i => ({ value: i.toLowerCase(), label: i }));
-    const { theme, systemTheme } = useTheme();
-    const dark = theme === 'dark' || (systemTheme === 'dark' && theme === 'system');
+    const dark = useDetectTheme();
+
     const colourStyles = {
         control: (styles) => ({
             ...styles, backgroundColor: dark ? '#ffffffd' : '#000000d', border: dark ? '1px solid rgb(30, 41, 59)' : '1px solid rgb(229, 231, 235)', boxShadow: 'none', fontSize: '14px', paddingLeft: '0px', paddingRight: '10px', paddingTop: '3.5px', paddingBottom: '3.5px', cursor: 'pointer', "&:hover": {

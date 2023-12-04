@@ -28,6 +28,15 @@ const articleSchema = new Schema({
         type: String,
         required: true,
     },
+    authorId: {
+        type: Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    views: {
+        type: Number,
+        default: 0,
+    }
 }, { timestamps: true });
 
 

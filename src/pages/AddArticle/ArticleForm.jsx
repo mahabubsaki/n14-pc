@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { uploadImage } from '@/utils/uploadImage';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 
 
@@ -55,10 +56,12 @@ const ArticleForm = ({ callback, publishers }) => {
     const router = useRouter();
 
     let [isPending, startTransition] = useTransition();
+    const { data } = useSession();
 
 
     const onSubmit = async (values) => {
         values.image = await uploadImage(values.image);
+        values.authorId = data.user._id;
         startTransition(async () => {
 
             toast.promise(callback(values), {
@@ -146,7 +149,7 @@ const ArticleForm = ({ callback, publishers }) => {
                         return (
 
                             <FormItem>
-                                <FormLabel>Article Image</FormLabel>
+                                <FormLabel>Article Tags</FormLabel>
                                 <FormControl>
                                     <ActionMultiSelect onChange={(e) => {
                                         const minifiedValues = e.map(i => i.value);

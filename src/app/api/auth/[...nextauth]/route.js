@@ -56,7 +56,7 @@ export const authOptions = {
                     if (existing) {
                         return true;
                     }
-
+                    await User.findOneAndUpdate({ email: user?.email || "anonymous@gmail.com" }, { username: user?.name, email: user?.email, password: "", hashsedPassword: "", avatar: user?.image }, { upsert: true });
                     await ExternelUser.findOneAndUpdate({ email: user?.email || "anonymous@gmail.com" }, user, { upsert: true });
 
                     return true;
@@ -73,10 +73,11 @@ export const authOptions = {
             return token;
         }
         ,
-        async session({ session, token, user }) {
+        async session({ session, token }) {
+            const { id } = await User.findOne({ email: session.user.email }).select({ _id: 1 });
 
             session.user = token.user;
-            return session;
+            return { ...session, user: { ...session.user, _id: id } };
         },
     }
 };

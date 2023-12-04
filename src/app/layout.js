@@ -9,6 +9,7 @@ import { getServerSession } from 'next-auth';
 import AuthProviders from '@/providers/AuthProviders';
 import Navbar from '@/common/Navbar';
 import ThemeProviders from '@/providers/ThemeProviders';
+import Footer from '@/common/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }) {
 
               {children}
             </section>
+            <Footer />
 
           </ThemeProviders>
         </AuthProviders>

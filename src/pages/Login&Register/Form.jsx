@@ -14,9 +14,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState, useTransition } from "react";
-import axios from "axios";
-import envConfig from "@/configs/env.configs";
+import { useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
