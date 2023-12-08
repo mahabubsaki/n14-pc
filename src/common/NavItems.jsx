@@ -1,6 +1,7 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 
@@ -19,20 +20,21 @@ const ROUTES = [
 ];
 const NavItems = () => {
     const { data } = useSession();
-    console.log({ data });
+    const path = usePathname();
+
     return (
         <div className='flex justify-center items-center gap-4 '>
             {ROUTES.map(i => {
                 if (i.common) {
-                    return <Link className='text-foreground hover:text-primarys-100' href={i.href} key={i.label}>
+                    return <Link className={`py-1 px-2 ${path === i.href ? 'bg-accents-400 rounded text-foreground' : 'text-foreground hover:text-primarys-100'}`} href={i.href} key={i.label}>
                         {i.label}
                     </Link>;
                 } else if (i.private && data) {
-                    return <Link className='text-foreground hover:text-primarys-100' href={i.href} key={i.label}>
+                    return <Link className={`py-1 px-2 ${path === i.href ? 'bg-accents-400 rounded text-foreground' : 'text-foreground hover:text-primarys-100'}`} href={i.href} key={i.label}>
                         {i.label}
                     </Link>;
                 } else if (i.unathenticated && !data) {
-                    return <Link className='text-foreground hover:text-primarys-100' href={i.href} key={i.label}>
+                    return <Link className={`py-1 px-2 ${path === i.href ? 'bg-accents-400 rounded text-foreground' : 'text-foreground hover:text-primarys-100'}`} href={i.href} key={i.label}>
                         {i.label}
                     </Link>;
                 } else {

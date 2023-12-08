@@ -18,8 +18,9 @@ const NoOptionsMessage = (props) => {
 const IndicatorSeparator = () => null;
 const animatedComponents = makeAnimated({ NoOptionsMessage, IndicatorSeparator });
 
-const ActionMultiSelect = ({ name, placeholder, label, selectOptions = [], onChange }) => {
+const ActionMultiSelect = ({ name, placeholder, label, selectOptions = [], onChange, defaults }) => {
     const modifiedOptions = selectOptions.map(i => ({ value: i.toLowerCase(), label: i }));
+    const modifiedDefaultOptions = defaults ? defaults.map(i => ({ value: i, label: i[0].toUpperCase() + i.slice(1) })) : [];
     const dark = useDetectTheme();
 
     const colourStyles = {
@@ -54,8 +55,8 @@ const ActionMultiSelect = ({ name, placeholder, label, selectOptions = [], onCha
 
             return {
                 ...styles,
-                background: isFocused ? dark ? 'rgb(164,140,91)' : 'rgb(237,232,222)' : 'white',
-                color: isFocused ? dark ? 'white' : 'black' : '#333333',
+                background: !isFocused ? dark ? '#020817' : 'white' : '#E2A83C',
+                color: dark ? 'white' : 'black',
                 cursor: 'pointer',
                 ':active': {
                     ...styles[':active'],
@@ -64,9 +65,11 @@ const ActionMultiSelect = ({ name, placeholder, label, selectOptions = [], onCha
                 },
             };
         },
+
         input: (styles) => ({ ...styles, color: dark ? '#9890A4' : '#666666', borderColor: 'rgb(229, 231, 235)' }),
         placeholder: (styles) => ({ ...styles, color: dark ? 'rgb(242, 240, 237)' : 'rgb(18, 16, 13)' }),
-        dropdownIndicator: (styles) => ({ ...styles, color: dark ? "rgb(242, 240, 237,0.5)" : "rgba(18, 16, 13,0.5)", padding: '0px', width: "20px" })
+        dropdownIndicator: (styles) => ({ ...styles, color: dark ? "rgb(242, 240, 237,0.5)" : "rgba(18, 16, 13,0.5)", padding: '0px', width: "20px" }),
+
     };
     return (
         <>
@@ -78,6 +81,7 @@ const ActionMultiSelect = ({ name, placeholder, label, selectOptions = [], onCha
                 onChange={onChange}
                 name={name}
                 styles={colourStyles}
+                defaultValue={modifiedDefaultOptions}
                 components={animatedComponents}
                 options={modifiedOptions}
             />

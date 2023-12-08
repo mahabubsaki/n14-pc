@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { Github } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { Skeleton } from "@/components/ui/skeleton";
+import { uploadImage } from "@/utils/uploadImage";
 
 const loginSchema = z.object({
     username: z.string().min(1, { message: "Username is required" }),
@@ -64,14 +65,13 @@ const registerSchema = z.object({
 });
 
 const PROVIDERS = [{ name: 'google', logo: <FaGoogle size={20} /> }, { name: 'github', logo: <Github size={20} /> }];
-
-export function LoginRegisterForm({ fields, callback, type }) {
+function LoginRegisterForm({ fields, callback, type }) {
     const session = useSession();
     const router = useRouter();
     let [isPending, startTransition] = useTransition();
 
     const values = {};
-    fields.forEach(each => {
+    fields?.forEach(each => {
         values[each.name] = "";
     });
 
@@ -83,7 +83,7 @@ export function LoginRegisterForm({ fields, callback, type }) {
     async function onSubmit(values) {
         if (type === 'register') {
 
-            values.avatar = url;
+            values.avatar = await uploadImage(values.avatar);
             startTransition(async () => {
 
                 toast.promise(callback(values), {
@@ -120,12 +120,12 @@ export function LoginRegisterForm({ fields, callback, type }) {
 
 
     useEffect(() => {
-        if (session.status === 'authenticated') {
+        if (session?.status === 'authenticated') {
             router.push("/");
         }
     }, [session]);
     console.log(isPending);
-    if (session.status === 'loading') {
+    if (session?.status === 'loading') {
         return <>
             <div className="w-4/5 md:w-[600px] ">
 
@@ -230,3 +230,6 @@ export function LoginRegisterForm({ fields, callback, type }) {
         </div>
     );
 }
+
+
+export default LoginRegisterForm;

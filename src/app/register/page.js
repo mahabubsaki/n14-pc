@@ -3,8 +3,10 @@
 
 import dbConnect from '@/db';
 import User from '@/modules/users/users.model';
-import { LoginRegisterForm } from '@/pages/Login&Register/Form';
+import LoginRegisterForm from '@/pagesx/Login&Register/Form';
+
 import passwordHasher from '@/utils/passwordHasher';
+import { revalidatePath } from 'next/cache';
 import React from 'react';
 
 const Register = () => {
@@ -15,6 +17,7 @@ const Register = () => {
 
             values.hashedPassword = await passwordHasher(values.password);
             await User.create(values);
+            revalidatePath("/");
             return { message: "Successfully Signed Up" };
         } catch (err) {
 

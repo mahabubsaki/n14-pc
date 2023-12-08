@@ -1,5 +1,5 @@
 
-import { LoginRegisterForm } from '@/pages/Login&Register/Form';
+import LoginRegisterForm from '@/pagesx/Login&Register/Form';
 import React from 'react';
 
 

@@ -1,6 +1,6 @@
 import dbConnect from '@/db';
 import Publisher from '@/modules/publishers/publishers.model';
-import PublisherForm from '@/pages/AddPublisher/PublisherForm';
+import PublisherForm from '@/pagesx/AddPublisher/PublisherForm';
 import { revalidatePath } from 'next/cache';
 import React from 'react';
 

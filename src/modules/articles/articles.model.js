@@ -20,6 +20,23 @@ const articleSchema = new Schema({
         type: [{ type: String, required: true }],
         required: true,
     },
+    status: {
+        type: String,
+        default: 'pending',
+        enum: ['pending', 'approved', 'rejected'],
+    },
+    reason: {
+        type: String,
+        default: "",
+    },
+    isPremium: {
+        type: Boolean,
+        default: false,
+    },
+    deleted: {
+        type: Boolean,
+        default: false,
+    },
     description: {
         type: String,
         required: true,

@@ -6,7 +6,7 @@ const Publishers = ({ publishers }) => {
 
     return (
         <div className='flex flex-wrap justify-center gap-8'>
-            {publishers.map(i => <div key={i._id} className='flex flex-col justify-center items-center gap-2'>
+            {publishers?.map(i => <div key={i._id} className='flex flex-col justify-center items-center gap-2'>
                 <div className='relative w-[160px] h-[70px] rounded-md'>
                     <Image alt='publisher-image' src={i.image} fill className='rounded-md' />
 

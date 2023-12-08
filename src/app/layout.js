@@ -33,7 +33,7 @@ export default async function RootLayout({ children }) {
           >
 
             <Navbar />
-            <section className='max-w-7xl mx-auto'>
+            <section className='max-w-7xl mx-auto min-h-[80vh]'>
 
 
               {children}

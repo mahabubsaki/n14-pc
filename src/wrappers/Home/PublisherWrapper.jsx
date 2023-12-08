@@ -1,6 +1,6 @@
 import dbConnect from '@/db';
 import Publisher from '@/modules/publishers/publishers.model';
-import Publishers from '@/pages/home/Publishers';
+import Publishers from '@/pagesx/home/Publishers';
 import hydrateData from '@/utils/hydrateData';
 import React from 'react';
 
