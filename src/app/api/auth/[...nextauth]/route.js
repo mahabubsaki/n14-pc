@@ -75,10 +75,10 @@ export const authOptions = {
         ,
         async session({ session, token }) {
             await dbConnect();
-            const { id } = await User.findOne({ email: session.user.email }).select({ _id: 1 }) || {};
+            const { id, role } = await User.findOne({ email: session.user.email }).select({ _id: 1, role: 1 }) || {};
 
             session.user = token.user;
-            return { ...session, user: { ...session.user, _id: id } };
+            return { ...session, user: { ...session.user, _id: id, role } };
         },
     }
 };

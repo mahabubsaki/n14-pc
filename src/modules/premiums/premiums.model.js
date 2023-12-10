@@ -20,6 +20,10 @@ const premiumScema = Schema({
         type: String,
         required: true
     },
+    transactionId: {
+        type: String,
+        required: true
+    },
     expiresAt: {
         type: Date,
         required: true,

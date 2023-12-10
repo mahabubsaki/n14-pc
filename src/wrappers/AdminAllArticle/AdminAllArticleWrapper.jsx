@@ -1,31 +1,38 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import dynamic from 'next/dynamic';
 import dbConnect from '@/db';
 import Article from '@/modules/articles/articles.model';
 
-const TableActions = dynamic(() => import('@/pagesx/MyArticles/TableActions'), { ssr: false });
+
+const AdminTableActions = dynamic(() => import('@/pagesx/AdminAllArticles/AdminTableActions'), { ssr: false });
 import ToolTip from '@/shared/ToolTip';
-
 import { Check, XCircle } from 'lucide-react';
-import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
-
 import React from 'react';
 
-const MyArticlesWrapper = async () => {
+const AdminAllArticleWrapper = async () => {
     await dbConnect();
-    const user = await getServerSession();
-
-
-    const myArticles = await Article.find({ authorEmail: user?.user?.email, deleted: false }).sort({ createdAt: -1 }).populate("publisher", { _id: 0, name: 1, image: 1 }).select({ title: 1, image: 1, views: 1, status: 1, reason: 1, isPremium: 1 });
-    const deleteArticle = async (id) => {
+    const allArticles = await Article.find({}).sort({ createdAt: -1 }).populate("publisher", { _id: 0, name: 1, image: 1 }).select({ title: 1, image: 1, views: 1, status: 1, reason: 1, isPremium: 1, deleted: 1 });
+    const deleteArticle = async (id, doc, message) => {
         'use server';
 
         try {
             await dbConnect();
-            await Article.findByIdAndUpdate(id, { $set: { deleted: true } });
-            revalidatePath("/my-articles");
+            await Article.findByIdAndUpdate(id, { $set: doc });
+            revalidatePath("/all-articles-admin");
+            return { message: message };
+        } catch (err) {
+            throw new Error(err);
+        }
+    };
+    const permenentlyDelete = async (id) => {
+        'use server';
+
+        try {
+            await dbConnect();
+            await Article.findByIdAndDelete(id);
+            revalidatePath("/all-articles-admin");
             return { message: "Successfully deleted article" };
         } catch (err) {
             throw new Error(err);
@@ -33,7 +40,7 @@ const MyArticlesWrapper = async () => {
     };
     return (
         <Table>
-            <TableCaption>A list of your {myArticles.length} articles.</TableCaption>
+            <TableCaption>A list of all {allArticles.length} articles.</TableCaption>
             <TableHeader>
                 <TableRow>
                     <TableHead className="w-[100px]">No</TableHead>
@@ -44,13 +51,14 @@ const MyArticlesWrapper = async () => {
                     <TableHead>Views</TableHead>
                     <TableHead>Premium</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Deleted</TableHead>
                     <TableHead>Action</TableHead>
                 </TableRow>
             </TableHeader>
 
             <TableBody>
 
-                {myArticles.map((i, index) => <TableRow key={i._id}>
+                {allArticles.map((i, index) => <TableRow key={i._id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>
                         {i.title}
@@ -68,7 +76,7 @@ const MyArticlesWrapper = async () => {
                         {i.views}
                     </TableCell>
                     <TableCell >
-                        {i.premium ?
+                        {i.isPremium ?
                             <ToolTip title={'Premium Article'}>
                                 <Check className='text-green-500 cursor-pointer' />
                             </ToolTip>
@@ -79,14 +87,23 @@ const MyArticlesWrapper = async () => {
                     <TableCell >
                         {i.status}
                     </TableCell>
-                    <TableActions status={i.status} reason={i.reason} callback={deleteArticle} id={JSON.parse(JSON.stringify(i._id))} />
+
+                    <TableCell >
+                        {i.deleted ?
+                            <ToolTip title={'This article was Deleted'}>
+                                <Check className='text-green-500 cursor-pointer' />
+                            </ToolTip>
+                            :
+                            <ToolTip title={'This article was not Deleted'}>
+                                <XCircle className='text-destructive cursor-pointer' /></ToolTip>}
+                    </TableCell>
+                    <AdminTableActions premium={i.isPremium} status={i.status} deleted={i.deleted} callback2={permenentlyDelete} callback={deleteArticle} id={JSON.parse(JSON.stringify(i._id))} />
                 </TableRow>)}
 
 
             </TableBody>
         </Table>
-
     );
 };
 
-export default MyArticlesWrapper;
+export default AdminAllArticleWrapper;

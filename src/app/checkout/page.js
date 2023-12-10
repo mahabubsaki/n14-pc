@@ -4,6 +4,7 @@ import Premium from '@/modules/premiums/premiums.model';
 import User from '@/modules/users/users.model';
 import CheckoutWrapper from '@/wrappers/Checkout/CheckoutWrapper';
 import { getServerSession } from 'next-auth';
+import { revalidatePath } from 'next/cache';
 
 import Image from 'next/image';
 import { notFound, redirect } from 'next/navigation';
@@ -57,6 +58,7 @@ const Checkout = async ({ searchParams }) => {
 
                 }
             });
+            revalidatePath("/profile");
             return { message: "Successfully took the subscription" };
         } catch (err) {
             throw new Error(err);

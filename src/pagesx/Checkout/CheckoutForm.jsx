@@ -76,10 +76,11 @@ const CheckoutForm = ({ clientSecret, currentPackage, callback }) => {
 
             startTransition(async () => {
                 const data = {
-                    package: currentPackage.key, price: 24, userId: userId, expiresAt: add(new Date(), {
+                    package: currentPackage.key, price: currentPackage.price, userId: userId, expiresAt: add(new Date(), {
                         days: 30
                     }),
-                    userEmail: email
+                    userEmail: email,
+                    transactionId: paymentIntent.id
                 };
                 try {
                     const response = await callback(data);

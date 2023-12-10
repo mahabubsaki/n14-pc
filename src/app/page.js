@@ -3,6 +3,7 @@ import Banner from "@/pagesx/home/Banner";
 import Faq from "@/pagesx/home/Faq";
 import Plans from "@/pagesx/home/Plans";
 import PublisherWrapper from "@/wrappers/Home/PublisherWrapper";
+import SliderWrapper from "@/wrappers/Home/SliderWrapper";
 import UserStatisticWrapper from "@/wrappers/Home/UserStatisticWrapper";
 import { Suspense } from "react";
 
@@ -20,9 +21,9 @@ export default function Home() {
           <h1 className='text-3xl text-center font-bold '>Trending News</h1>
           <span className="mt-6 bg-secondarys-500 block mx-auto h-1 max-w-[150px]"></span>
         </div>
-        {/* <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<p>Loading...</p>}>
           <SliderWrapper />
-        </Suspense> */}
+        </Suspense>
       </div>
       <div className="mb-6">
         <div className="mb-10">

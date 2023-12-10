@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import DashboardButton from './DashboardButton';
 
 
 
@@ -11,7 +12,7 @@ const ROUTES = [
     { label: 'Home', href: '/', common: true },
     { label: 'All Articles', href: '/all-articles', common: true },
     { label: 'Add Articles', href: '/add-articles', private: true },
-    { label: 'Add Publishers', href: '/add-publishers', private: true },
+
     { label: 'My Articles', href: '/my-articles', private: true },
     { label: 'Subscription', href: '/subscription', private: true },
     { label: 'Premium Articles', href: '/premium-articles', private: true },
@@ -21,6 +22,7 @@ const ROUTES = [
 const NavItems = () => {
     const { data } = useSession();
     const path = usePathname();
+
 
     return (
         <div className='flex justify-center items-center gap-4 '>
@@ -41,6 +43,7 @@ const NavItems = () => {
                     return null;
                 }
             })}
+            {(data?.user && data?.user?.role === 'admin') ? <DashboardButton /> : null}
         </div>
     );
 };

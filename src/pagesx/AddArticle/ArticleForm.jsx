@@ -87,9 +87,14 @@ const ArticleForm = ({ callback, publishers, article }) => {
 
     const onSubmit = async (values) => {
         setLoading(true);
-        // values.image = await uploadImage(values.image);
-        // if (!values.image) return;
-        values.image = article.image;
+        try {
+            values.image = await uploadImage(values.image);
+        } catch (err) {
+            setLoading(false);
+            toast.error(err.message,);
+        }
+        if (!values.image) return;
+        // values.image = article.image;
         if (article) {
             values.articleId = article._id;
         } else {

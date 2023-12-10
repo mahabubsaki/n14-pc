@@ -233,3 +233,9 @@
 .css-1n6sfyn-MenuList{
   padding: 0px !important;
 }
+.dark g>text{
+  fill: #F2F0ED !important;
+}
+g>text{
+  fill: #12100D !important;
+}

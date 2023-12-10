@@ -65,6 +65,7 @@ const TableActions = ({ callback, id, reason, status }) => {
                                         success: (data) => {
                                             return data.message;
                                         },
+                                        loading: 'Deleting article...',
                                         error: (err) => {
                                             return err.message;
                                         }, finally: () => {
