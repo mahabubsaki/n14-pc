@@ -120,7 +120,6 @@ const Engagement = async () => {
 
     ]);
 
-    console.log(data3);
 
     const formatedData3 = data3.map(i => {
         return [i.date, i.count];

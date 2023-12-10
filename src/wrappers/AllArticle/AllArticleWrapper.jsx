@@ -16,15 +16,15 @@ const AllArticleWrapper = async ({ searchParams }) => {
     const newestFirst = searchParams.newest === "false" ? 1 : -1;
 
     const page = searchParams.page ? +searchParams.page - 1 : 0;
-    const data = await Article.find(filterFields, null, {
+    const data = await Article.find({ ...filterFields, status: 'approved' }, null, {
         limit: limit,
         skip: page * limit,
         sort: {
             createdAt: newestFirst
         },
-    }).populate("publisher", { name: 1, image: 1, _id: 0 }).select({ 'title': 1, 'image': 1, 'tags': 1, 'description': 1, 'views': 1 });
+    }).populate("publisher", { name: 1, image: 1, _id: 0 }).select({ 'title': 1, 'image': 1, 'tags': 1, 'description': 1, 'views': 1, 'isPremium': 1 });
     const articles = hydrateData(data);
-    const pages = new Array(Math.ceil(await Article.countDocuments(filterFields) / limit)).fill(1);
+    const pages = new Array(Math.ceil(await Article.countDocuments({ ...filterFields, status: 'approved' }) / limit)).fill(1);
 
     const activePage = searchParams.page ? +searchParams.page : 1;
 

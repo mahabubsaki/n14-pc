@@ -6,9 +6,9 @@ import Link from 'next/link';
 import React from 'react';
 
 const ArticleCard = ({ article }) => {
-    const { _id, title, image, publisher: { name: publisherName, image: publisherImage }, tags, description, views } = article || { publisher: {} };
+    const { _id, title, image, isPremium, publisher: { name: publisherName, image: publisherImage }, tags, description, views } = article || { publisher: {} };
     return (
-        <div className='border rounded-xl h-full flex flex-col justify-between'>
+        <div className={`border rounded-xl h-full flex flex-col justify-between ${isPremium ? 'bg-orange-500 dark:bg-orange-300' : ''} `}>
             <div>
                 <div>
                     <AspectRatio ratio={16 / 7} className="bg-muted">
@@ -20,6 +20,7 @@ const ArticleCard = ({ article }) => {
                         />
                     </AspectRatio>
                 </div>
+                {isPremium ? <p className='italic'>Premium</p> : null}
                 <div className='p-4 flex flex-col justify-between gap-4 '>
                     <div className=' flex flex-col gap-4'>
                         <h2 className='text-2xl font-bold text-secondarys-400 italic'>{title}</h2>

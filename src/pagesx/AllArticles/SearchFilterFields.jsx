@@ -58,7 +58,7 @@ const SearchFilterFields = ({ publishers, pages, activePage }) => {
                         queryParams.push(`${key}=${value}`);
                     }
                     const reconstructedQueryString = queryParams.join('&');
-                    console.log(reconstructedQueryString.length);
+
                     const conditonalQuery = (reconstructedQueryString.length < 1 || reconstructedQueryString.includes('page')) ? `/all-articles?page=${i + 1}` : `/all-articles?page=${i + 1}&${reconstructedQueryString}`;
                     router.push(conditonalQuery);
                 }} variant={activePage == (i + 1) ? "default" : "outline"} size="sm" key={i}>{i + 1}</Button>)}

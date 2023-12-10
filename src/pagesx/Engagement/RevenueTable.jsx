@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import React from 'react';
 
 const RevenueTable = ({ data }) => {
-    console.log(data);
+
     return (
         <Table>
             <TableCaption>A list of our recent revenues.</TableCaption>

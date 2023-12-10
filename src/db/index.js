@@ -2,7 +2,7 @@ import envConfig from "@/configs/env.configs";
 import mongoose from "mongoose";
 
 process.on("uncaughtException", (error) => {
-    console.log(error);
+
     process.exit(1);
 });
 async function dbConnect() {
@@ -12,7 +12,7 @@ async function dbConnect() {
             connectTimeoutMS: 6000000,
         });
     } catch (err) {
-        console.log('failed to connect db', err);
+
     }
     process.on('unhandledRejection', (error) => {
         process.exit(1);

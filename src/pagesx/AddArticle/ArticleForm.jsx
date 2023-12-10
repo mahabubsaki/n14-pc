@@ -72,7 +72,7 @@ const MULTI_SELECT_OPTIONS = ['Sports', 'International', 'Space', 'Hollywood', '
 
 
 const ArticleForm = ({ callback, publishers, article }) => {
-    console.log(article);
+
     const form = useForm({
         resolver: zodResolver(articleSchema),
         defaultValues: DEFAULT_VALUES,
@@ -134,7 +134,7 @@ const ArticleForm = ({ callback, publishers, article }) => {
 
         }
     }, [article]);
-    console.log(form.watch());
+
     return (
         <Form  {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-4/5  md:w-[600px] mx-auto flex flex-col gap-4'>

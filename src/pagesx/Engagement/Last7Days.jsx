@@ -4,7 +4,7 @@ import React from 'react';
 import Chart from 'react-google-charts';
 
 const Last7Days = ({ data }) => {
-    console.log(data);
+
     const dark = useDetectTheme();
     return (
         <Chart

@@ -8,7 +8,7 @@ const UserStatistic = ({ users }) => {
         triggerOnce: true,
         threshold: 0.5
     });
-    console.log(users);
+
     return (
         <div ref={ref} className='px-4 py-10 rounded-xl border-[3px] grid grid-cols-4 border-secondarys-700'>
             <div className='flex flex-col gap-3 items-center'>

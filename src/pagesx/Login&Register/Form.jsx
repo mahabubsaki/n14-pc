@@ -124,7 +124,7 @@ function LoginRegisterForm({ fields, callback, type }) {
             router.push("/");
         }
     }, [session]);
-    console.log(isPending);
+
     if (session?.status === 'loading') {
         return <>
             <div className="w-4/5 md:w-[600px] ">

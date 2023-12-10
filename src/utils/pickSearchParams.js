@@ -12,7 +12,6 @@ export default function pickSearchParams(obj, fields) {
             } else if (i === 'publisher') {
                 dataObj[i] = Types.ObjectId.isValid(obj[i]) ? obj[i] : new Types.ObjectId();
             } else if (i === 'tags') {
-                console.log({ s: obj[i].split('-') });
                 dataObj[i] = {
                     $all: obj[i].split('-'),
                 };

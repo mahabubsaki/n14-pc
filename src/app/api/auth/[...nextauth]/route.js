@@ -61,7 +61,7 @@ export const authOptions = {
 
                     return true;
                 } catch (err) {
-                    console.log('error in route.ts 50 line', err);
+
                     return false;
                 }
             }

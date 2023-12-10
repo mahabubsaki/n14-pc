@@ -11,7 +11,7 @@ const Profile = async () => {
 
     await dbConnect();
     const premiumInfo = await Premium.findOne({ userEmail: session.user.email }).populate('userId', { _id: 0, avatar: 1, username: 1, role: 1, createdAt: 1 }).select({ _id: 0, createdAt: 1, expiresAt: 1, package: 1 }) || await User.findOne({ email: session.user.email }).select({ _id: 0, avatar: 1, username: 1, role: 1, createdAt: 1 });
-    console.log(premiumInfo);
+
     return (
         <div className="mb-10">
             <h1 className='text-3xl text-center font-bold '>My Profile</h1>
