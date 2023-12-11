@@ -11,10 +11,10 @@ const LogoutButton = () => {
     return (
         data ? <ToolTip title={'Logout'}>
             <Button onClick={() => {
-                toast.promise(signOut({ redirect: false }), {
+                toast.promise(signOut({ redirect: true }), {
                     loading: "Signing out...",
                     success: (_) => "Successfully logged out",
-                    error: (_) => "Something went wrong"
+                    error: (_) => "Something went wrong",
                 })
                     ;
             }} variant="destructive">  <LogOut className='text-foreground' size={20} /></Button>

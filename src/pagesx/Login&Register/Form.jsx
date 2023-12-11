@@ -17,7 +17,8 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import { Github } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -68,6 +69,8 @@ const PROVIDERS = [{ name: 'google', logo: <FaGoogle size={20} /> }, { name: 'gi
 function LoginRegisterForm({ fields, callback, type }) {
     const session = useSession();
     const router = useRouter();
+    const searchParams = useSearchParams();
+
     let [isPending, startTransition] = useTransition();
 
     const values = {};
@@ -121,6 +124,7 @@ function LoginRegisterForm({ fields, callback, type }) {
 
     useEffect(() => {
         if (session?.status === 'authenticated') {
+
             router.push("/");
         }
     }, [session]);
@@ -209,7 +213,7 @@ function LoginRegisterForm({ fields, callback, type }) {
 
                             toast.promise(signIn(i.name, {
                                 redirect: false,
-                                callbackUrl: "/"
+                                callbackUrl: searchParams.get('redirect') || "/"
                             }), {
                                 loading: "Signing In...",
                                 success: (_) => {

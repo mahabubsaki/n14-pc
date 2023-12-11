@@ -1,14 +1,36 @@
+import envConfig from '@/configs/env.configs';
 import dbConnect from '@/db';
 import Article from '@/modules/articles/articles.model';
 import Premium from '@/modules/premiums/premiums.model';
+import User from '@/modules/users/users.model';
 import Last7Days from '@/pagesx/Engagement/Last7Days';
 import PublisherPercentage from '@/pagesx/Engagement/PublisherPercentage';
 import RevenueTable from '@/pagesx/Engagement/RevenueTable';
 import hydrateData from '@/utils/hydrateData';
 import { subDays } from 'date-fns';
+import { getServerSession } from 'next-auth';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 const Engagement = async () => {
+
+    const session = await getServerSession();
+
+
+
+
+    const headerList = headers();
+    const currentPath = headerList.get('referer')?.split(envConfig.baseUrl)[1];
+
+    if (!session?.user) {
+        return redirect(`/login?redirect=${currentPath}`);
+    }
+    const role = (await User?.findOne({ email: session?.user?.email }))?.role === 'admin';
+
+    if (!role) {
+        return redirect('/');
+    }
     await dbConnect();
     const data = await Article.aggregate([{
         $lookup: {

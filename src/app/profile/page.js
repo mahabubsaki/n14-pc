@@ -1,13 +1,23 @@
+import envConfig from '@/configs/env.configs';
 import dbConnect from '@/db';
 import Premium from '@/modules/premiums/premiums.model';
 import User from '@/modules/users/users.model';
 import { format } from 'date-fns';
 import { getServerSession } from 'next-auth';
+import { headers } from 'next/headers';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 const Profile = async () => {
     const session = await getServerSession();
+
+    const headerList = headers();
+    const currentPath = headerList.get('referer')?.split(envConfig.baseUrl)[1];
+
+    if (!session?.user) {
+        return redirect(`/login?redirect=${currentPath}`);
+    }
 
     await dbConnect();
     const premiumInfo = await Premium.findOne({ userEmail: session.user.email }).populate('userId', { _id: 0, avatar: 1, username: 1, role: 1, createdAt: 1 }).select({ _id: 0, createdAt: 1, expiresAt: 1, package: 1 }) || await User.findOne({ email: session.user.email }).select({ _id: 0, avatar: 1, username: 1, role: 1, createdAt: 1 });

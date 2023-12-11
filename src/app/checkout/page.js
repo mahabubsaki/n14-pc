@@ -1,10 +1,12 @@
 
+import envConfig from '@/configs/env.configs';
 import dbConnect from '@/db';
 import Premium from '@/modules/premiums/premiums.model';
 import User from '@/modules/users/users.model';
 import CheckoutWrapper from '@/wrappers/Checkout/CheckoutWrapper';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
 
 import Image from 'next/image';
 import { notFound, redirect } from 'next/navigation';
@@ -27,7 +29,14 @@ export const metadata = {
 };
 
 const Checkout = async ({ searchParams }) => {
-    const data = await getServerSession();
+    const session = await getServerSession();
+
+    const headerList = headers();
+    const currentPath = headerList.get('referer')?.split(envConfig.baseUrl)[1];
+
+    if (!session?.user) {
+        return redirect(`/login?redirect=${currentPath}`);
+    }
     await dbConnect();
     const alreadyTaken = await Premium.findOne({ userEmail: data.user.email });
     if (alreadyTaken) {

@@ -1,10 +1,23 @@
 
+import envConfig from '@/configs/env.configs';
 import dbConnect from '@/db';
 import Article from '@/modules/articles/articles.model';
 import ArticleCard from '@/pagesx/AllArticles/ArticleCard';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/dist/server/api-utils';
+import { headers } from 'next/headers';
 import React from 'react';
 
 const PremiumArticles = async () => {
+
+    const session = await getServerSession();
+
+    const headerList = headers();
+    const currentPath = headerList.get('referer')?.split(envConfig.baseUrl)[1];
+
+    if (!session?.user) {
+        return redirect(`/login?redirect=${currentPath}`);
+    }
     await dbConnect();
     const articles = await Article.find({ isPremium: true, status: 'approved' }).populate("publisher", { name: 1, image: 1, _id: 0 }).select({ 'title': 1, 'image': 1, 'tags': 1, 'description': 1, 'views': 1, 'isPremium': 1 });
 

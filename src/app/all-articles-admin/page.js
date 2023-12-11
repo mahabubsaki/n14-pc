@@ -1,7 +1,23 @@
+import User from '@/modules/users/users.model';
 import AdminAllArticleWrapper from '@/wrappers/AdminAllArticle/AdminAllArticleWrapper';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 import React, { Suspense } from 'react';
+import { headers } from 'next/headers';
+import envConfig from '@/configs/env.configs';
 
-const AllArticlesAdmin = () => {
+const AllArticlesAdmin = async () => {
+    const headerList = headers();
+    const currentPath = headerList.get('referer')?.split(envConfig.baseUrl)[1];
+    const session = await getServerSession();
+    if (!session?.user) {
+        return redirect(`/login?redirect=${currentPath}`);
+    }
+    const role = (await User?.findOne({ email: session?.user?.email }))?.role === 'admin';
+
+    if (!role) {
+        return redirect('/');
+    }
     return (
         <div>
             <div className="mb-10">

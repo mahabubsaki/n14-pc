@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
 const Subscription = async () => {
     const data = await getServerSession();
     await dbConnect();
-    const alreadyTaken = !!(await Premium.findOne({ userEmail: data.user.email })) ? true : false;
+    const alreadyTaken = !!(await Premium.findOne({ userEmail: data?.user?.email })) ? true : false;
     return (
 
 

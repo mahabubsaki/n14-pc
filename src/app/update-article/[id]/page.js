@@ -1,15 +1,26 @@
+import envConfig from '@/configs/env.configs';
 import dbConnect from '@/db';
 import Article from '@/modules/articles/articles.model';
 import Publisher from '@/modules/publishers/publishers.model';
 import ArticleForm from '@/pagesx/AddArticle/ArticleForm';
 import hydrateData from '@/utils/hydrateData';
 import { Types } from 'mongoose';
-import { notFound } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { headers } from 'next/headers';
+import { notFound, redirect } from 'next/navigation';
 import React from 'react';
 
 
 
 const UpdateArticle = async ({ params }) => {
+    const session = await getServerSession();
+
+    const headerList = headers();
+    const currentPath = headerList.get('referer')?.split(envConfig.baseUrl)[1];
+
+    if (!session?.user) {
+        return redirect(`/login?redirect=${currentPath}`);
+    }
     await dbConnect();
     const article = await Article.findById(Types.ObjectId.isValid(params.id) ? params.id : new Types.ObjectId()).select({ description: 1, title: 1, tags: 1, publisher: 1, image: 1 });
     if (!article) notFound();
